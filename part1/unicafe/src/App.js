@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-const DisplayHeader = (props) => {
+const DisplayHeader = ({ text }) => {
   return (
-    <h1>{props.text}</h1>
+    <h1>{text}</h1>
   )
 }
 
@@ -14,9 +14,23 @@ const Button = ({ handleClick, text }) => {
   ) 
 }
 
-const DisplayStats = ({ text, num }) => {
+const Statistics = (props) => {
+  if(props.allClicks === 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
   return (
-    <p>{text} {num}</p>
+    <div>
+      <p>good {props.good}</p>
+      <p>neutral {props.neutral}</p>
+      <p>bad {props.bad}</p>
+      <p>total {props.total}</p>
+      <p>average {props.average}</p>
+      <p>positive {props.positive} %</p>
+    </div>    
   )
 }
 
@@ -32,6 +46,9 @@ const App = () => {
   const [avg, setAvg] = useState(0)
   const [positive, setPositive] = useState(0)
 
+  // used to count # clicks needed in Statistics component
+  const [allClicks, setAllClicks] = useState(0)
+
   const incrementGood = () => {
     setGood(good + 1)
     setTotal(total + 1)
@@ -41,6 +58,7 @@ const App = () => {
     setAvg(updatedSum / updatedTotal)
     const updatedGood = good + 1
     setPositive((updatedGood / updatedTotal) * 100)
+    setAllClicks(allClicks + 1)
   }
 
   const incrementNeutral = () => {
@@ -52,6 +70,7 @@ const App = () => {
     setAvg(updatedSum / updatedTotal)
     const updatedGood = good
     setPositive((updatedGood / updatedTotal) * 100)
+    setAllClicks(allClicks + 1)
   }
 
   const incrementBad = () => {
@@ -63,6 +82,7 @@ const App = () => {
     setAvg(updatedSum / updatedTotal)
     const updatedGood = good
     setPositive((updatedGood / updatedTotal) * 100)
+    setAllClicks(allClicks + 1)
   }
 
   return (
@@ -72,12 +92,8 @@ const App = () => {
       <Button handleClick={incrementNeutral} text='neutral' />
       <Button handleClick={incrementBad} text='bad' />      
       <DisplayHeader text='statistics' />      
-      <DisplayStats text='good' num={good}/> 
-      <DisplayStats text='neutral' num={neutral} />
-      <DisplayStats text='bad' num={bad} />
-      <DisplayStats text='total' num={total} />
-      <DisplayStats text='average' num={avg} />
-      <p>positive {positive} %</p>
+      <Statistics allClicks={allClicks} good={good} neutral={neutral} 
+        bad={bad} total={total} average={avg} positive={positive} />
     </div>
   )
 }
