@@ -27,25 +27,42 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const [total, setTotal] = useState(0)
+
+  const [sum, setSum] = useState(0)
   const [avg, setAvg] = useState(0)
   const [positive, setPositive] = useState(0)
 
   const incrementGood = () => {
     setGood(good + 1)
     setTotal(total + 1)
-    //setAvg(avg => (avg + 1) / total)
+    const updatedTotal = total + 1
+    setSum(sum + 1)
+    const updatedSum = sum + 1
+    setAvg(updatedSum / updatedTotal)
+    const updatedGood = good + 1
+    setPositive((updatedGood / updatedTotal) * 100)
   }
 
   const incrementNeutral = () => {
     setNeutral(neutral + 1)
     setTotal(total + 1)
-    setAvg(avg / total)
+    const updatedTotal = total + 1
+    setSum(sum)
+    const updatedSum = sum
+    setAvg(updatedSum / updatedTotal)
+    const updatedGood = good
+    setPositive((updatedGood / updatedTotal) * 100)
   }
 
   const incrementBad = () => {
     setBad(bad + 1)
     setTotal(total + 1)
-    //setAvg(avg => (avg - 1) / total)
+    const updatedTotal = total + 1
+    setSum(sum - 1)
+    const updatedSum = sum - 1
+    setAvg(updatedSum / updatedTotal)
+    const updatedGood = good
+    setPositive((updatedGood / updatedTotal) * 100)
   }
 
   return (
@@ -60,6 +77,7 @@ const App = () => {
       <DisplayStats text='bad' num={bad} />
       <DisplayStats text='total' num={total} />
       <DisplayStats text='average' num={avg} />
+      <p>positive {positive} %</p>
     </div>
   )
 }
