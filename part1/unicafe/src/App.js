@@ -26,16 +26,26 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const [total, setTotal] = useState(0)
+  const [avg, setAvg] = useState(0)
+  const [positive, setPositive] = useState(0)
+
   const incrementGood = () => {
     setGood(good + 1)
+    setTotal(total + 1)
+    //setAvg(avg => (avg + 1) / total)
   }
 
   const incrementNeutral = () => {
     setNeutral(neutral + 1)
+    setTotal(total + 1)
+    setAvg(avg / total)
   }
 
   const incrementBad = () => {
     setBad(bad + 1)
+    setTotal(total + 1)
+    //setAvg(avg => (avg - 1) / total)
   }
 
   return (
@@ -48,6 +58,8 @@ const App = () => {
       <DisplayStats text='good' num={good}/> 
       <DisplayStats text='neutral' num={neutral} />
       <DisplayStats text='bad' num={bad} />
+      <DisplayStats text='total' num={total} />
+      <DisplayStats text='average' num={avg} />
     </div>
   )
 }
