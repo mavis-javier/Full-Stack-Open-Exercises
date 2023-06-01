@@ -14,23 +14,11 @@ const Button = ({ handleClick, text }) => {
   ) 
 }
 
-const Statistics = (props) => {
-  if(props.allClicks === 0) {
-    return (
-      <div>
-        No feedback given
-      </div>
-    )
-  }
+const StatisticLine = ({ text, value }) => {
   return (
     <div>
-      <p>good {props.good}</p>
-      <p>neutral {props.neutral}</p>
-      <p>bad {props.bad}</p>
-      <p>total {props.total}</p>
-      <p>average {props.average}</p>
-      <p>positive {props.positive} %</p>
-    </div>    
+      <p>{text} {value}</p>
+    </div>
   )
 }
 
@@ -85,6 +73,26 @@ const App = () => {
     setAllClicks(allClicks + 1)
   }
 
+  const Statistics = (props) => {
+    if(props.allClicks === 0) {
+      return (
+        <div>
+          No feedback given
+        </div>
+      )
+    }
+    return (
+      <div>
+        <StatisticLine text="good" value ={good} />
+        <StatisticLine text="neutral" value ={neutral} />
+        <StatisticLine text="bad" value ={bad} />
+        <StatisticLine text="all" value ={total} />
+        <StatisticLine text="average" value ={avg} />
+        <p>positive {positive} %</p>
+      </div>    
+    )
+  }
+
   return (
     <div>
       <DisplayHeader text='give feedback' />
@@ -92,8 +100,7 @@ const App = () => {
       <Button handleClick={incrementNeutral} text='neutral' />
       <Button handleClick={incrementBad} text='bad' />      
       <DisplayHeader text='statistics' />      
-      <Statistics allClicks={allClicks} good={good} neutral={neutral} 
-        bad={bad} total={total} average={avg} positive={positive} />
+      <Statistics allClicks={allClicks} />
     </div>
   )
 }
