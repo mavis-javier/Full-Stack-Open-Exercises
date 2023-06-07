@@ -1,8 +1,7 @@
 import React from 'react'
 import Course from './components/Course'
-// for 2.1, my course component contains a Header and Content component
 
-function App() {
+const App = () => {
   const course = {
     id: 1,
     name: 'Half Stack application development',

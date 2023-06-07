@@ -1,21 +1,5 @@
-import React from 'react'
+import Part from './Part'
 
-const Part = ({ part }) => 
-  <p>
-    {part.name} {part.exercises}
-  </p>
+const Content = ({ parts }) => parts.map(part => <Part key={part.id} part={part} />)
 
-const Content = ({ parts }) => 
-  <>
-    <Part
-      part={parts[0]} 
-    />
-    <Part
-      part={parts[1]} 
-    />
-    <Part
-      part={parts[2]} 
-    />      
-  </>
-
-  export default Content;
+export default Content;
