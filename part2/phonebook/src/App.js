@@ -3,15 +3,20 @@ import _ from 'lodash'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    {
+      name: 'Arto Hellas',
+      phoneNum: '040-1234567'
+    }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newNum, setNewNum] = useState('')
 
   // adds name to person state
   const addName = (event) => {
     event.preventDefault();    
     const personObj = {
-      name: newName
+      name: newName,
+      phoneNum: newNum
     }
 
     // determines if name is in persons [] already
@@ -36,6 +41,11 @@ const App = () => {
     setNewName(event.target.value);
   }
 
+  // set new phone number from input
+  const handleNumChange = (event) => {
+    setNewNum(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -44,11 +54,14 @@ const App = () => {
           name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
+          number: <input value={newNum} onChange={handleNumChange} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>{persons.map(person => <p>{person.name}</p>)}</div>
+      <div>{persons.map(person => <p>{person.name} {person.phoneNum}</p>)}</div>
     </div>
   )
 }
