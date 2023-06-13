@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import _ from 'lodash'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -8,13 +9,26 @@ const App = () => {
 
   // adds name to person state
   const addName = (event) => {
-    event.preventDefault();
-    console.log(event.target);
+    event.preventDefault();    
     const personObj = {
       name: newName
     }
-    console.log(personObj);
-    setPersons(persons.concat(personObj));
+
+    // determines if name is in persons [] already
+    var isAdded = false; 
+
+    // check if name exists for each object -- O(n) time
+    persons.map((person) => {      
+      if(_.isEqual(person.name, personObj.name)) {
+        isAdded = true;
+      } 
+    })
+    
+    if(!isAdded) {
+      setPersons(persons.concat(personObj));
+    } else {
+      alert(`${newName} is already added to the phonebook`)
+    }
   }
 
   // sets new name from input
