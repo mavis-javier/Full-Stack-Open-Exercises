@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react'
 import _ from 'lodash'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      phoneNum: '040-1234567'
-    }
-  ]) 
+  const [persons, setPersons] = useState([]) 
 
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
@@ -24,12 +21,21 @@ const App = () => {
     setNewNum(event.target.value);
   }
 
+  // utilizes phonebook service
+  useEffect(() => {
+    phonebookService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
+
   // adds name to person state
   const addName = (event) => {
     event.preventDefault();    
     const personObj = {
         name: newName,
-        phoneNum: newNum
+        number: newNum
     }
     // determines if name is in persons[] already
     var isAdded = false; 
@@ -42,10 +48,21 @@ const App = () => {
     })
     
     if(!isAdded) {
-        setPersons(persons.concat(personObj));
+        setPersons(persons.concat(personObj))
+        phonebookService
+          .create(personObj)
+          .then(returnedPerson => {
+            console.log(returnedPerson);
+            setPersons(persons.concat(returnedPerson))
+            console.log(persons.map((person) => person.name));
+            console.log(persons.map((person) => person.id));
+            console.log(persons);
+            setNewName('')  //*
+            setNewNum('')   // *
+          })
     } else {
         alert(`${newName} is already added to the phonebook`)
-    }
+    }    
 }
 
 
