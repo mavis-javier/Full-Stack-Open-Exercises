@@ -52,11 +52,7 @@ const App = () => {
         phonebookService
           .create(personObj)
           .then(returnedPerson => {
-            console.log(returnedPerson);
-            setPersons(persons.concat(returnedPerson))
-            console.log(persons.map((person) => person.name));
-            console.log(persons.map((person) => person.id));
-            console.log(persons);
+            setPersons(persons.concat(returnedPerson.data))
             setNewName('')  //*
             setNewNum('')   // *
           })
