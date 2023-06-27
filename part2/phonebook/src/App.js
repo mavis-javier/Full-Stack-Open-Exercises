@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import axios from 'axios'
 import phonebookService from './services/phonebook'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -11,6 +12,9 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNum, setNewNum] = useState('');
   
+  // notification state
+  const [notify, setNotify] = useState(null);
+
   // sets new name from input
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -47,15 +51,20 @@ const App = () => {
         } 
     })
     
+    // add new contact to setPersons state
     if(!isAdded) {
-        setPersons(persons.concat(personObj))
-        phonebookService
-          .create(personObj)
-          .then(returnedPerson => {
-            setPersons(persons.concat(returnedPerson.data))
-            setNewName('')  //*
-            setNewNum('')   // *
-          })
+      setPersons(persons.concat(personObj))
+      phonebookService
+        .create(personObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson.data))
+          setNewName('')  // *
+          setNewNum('')   // *    
+          setNotify(`Added ${newName}`)
+          setTimeout(() => {
+            setNotify(null)
+          }, 5000)                
+        })        
     } else {
         alert(`${newName} is already added to the phonebook`)
     }    
@@ -65,7 +74,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={notify} />
       <h3>Add a new</h3>
       <PersonForm
 				onSubmit={addName}
