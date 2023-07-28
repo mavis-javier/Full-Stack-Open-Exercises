@@ -31,6 +31,7 @@ let persons = [
 
 const date = Date();
 
+// 3.1
 app.get('/', (request, response) => {
     response.send('<h1>Test</h1>')
 })
@@ -39,7 +40,7 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
   })
 
-// 3.3: display # of contacts in phonebook and date and time request was made
+// 3.2: display # of contacts in phonebook and date and time request was made
 app.get('/info', (request, response) => {
     response.send(
         `<p>Phonebook has info for ${persons.length} people</p>
@@ -48,7 +49,7 @@ app.get('/info', (request, response) => {
     )
 })
 
-// 3.4: returns information of given ID in URL
+// 3.3: returns information of given ID in URL
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
@@ -57,6 +58,28 @@ app.get('/api/persons/:id', (request, response) => {
     } else {
         response.status(404).end()
     }
+})
+
+// 3.4: delete requested contact with given ID in URL
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id !== id)
+
+    response.status(204).end()
+})
+
+// 3.5: add contacts in backend
+app.post('/api/persons', (request, response) => {
+    const maxId = persons.length > 0
+      ? Math.max(...persons.map(n => n.id)) 
+      : 0
+  
+    const person = request.body
+    person.id = maxId + 1
+  
+    persons = persons.concat(person)
+  
+    response.json(person)
 })
   
 const PORT = 3001
