@@ -1,4 +1,4 @@
-DELETE http://localhost:3001/api/persons/1
+DELETE http://localhost:3001/api/persons/6
 ###
 POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
@@ -6,4 +6,21 @@ content-type: application/json
 {
     "name": "Mavis Javier",
     "number": "123456789"
+}
+
+###
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "number": "466461654"
+}
+
+###
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Mom"
+    
 }

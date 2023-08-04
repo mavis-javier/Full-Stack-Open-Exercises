@@ -33,7 +33,7 @@ const date = Date();
 
 // 3.1
 app.get('/', (request, response) => {
-    response.send('<h1>Test</h1>')
+    response.send(`<h1>Test</h1>`)
 })
 
 app.get('/api/persons', (request, response) => {
@@ -69,16 +69,47 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 // 3.5: add contacts in backend
-app.post('/api/persons', (request, response) => {
+app.use(express.json())
+
+const generateId = () => {
     const maxId = persons.length > 0
-      ? Math.max(...persons.map(n => n.id)) 
+      ? Math.max(...persons.map(n => n.id))
       : 0
-  
-    const person = request.body
-    person.id = maxId + 1
-  
+    return maxId + 1
+}
+
+// 3.6: error handling    
+app.post('/api/persons', (request, response) => {
+    const body = request.body
+
+    // name or number is missing
+    if (!body.name) {
+        return response.status(400).json({ 
+            error: 'name missing' 
+        })
+    }
+
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'number missing'
+        })
+    }
+
+    // name already exists in phonebook
+    if (persons.find(person => person.name === body.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+    
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId(),
+    }
+
     persons = persons.concat(person)
-  
+
     response.json(person)
 })
   
