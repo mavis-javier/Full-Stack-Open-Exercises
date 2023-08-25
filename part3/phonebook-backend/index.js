@@ -5,6 +5,19 @@ const express = require('express')
 // export express as a function in app variable
 const app = express()
 
+// 3.7: use morgan
+const morgan = require('morgan')
+morgan('tiny')
+morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms'
+    ].join(' ')
+  })
+
 // hardcoded contact info
 let persons = [
     { 
